@@ -12,7 +12,7 @@ import MarketplaceAbi from '../contractsData/Marketplace.json'
 import MarketplaceAddress from '../contractsData/Marketplace-address.json'
 import NFTAbi from '../contractsData/NFT.json'
 import NFTAddress from '../contractsData/NFT-address.json'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ethers } from "ethers"
 import { Spinner } from 'react-bootstrap'
 
@@ -23,10 +23,15 @@ function App() {
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState({})
   const [marketplace, setMarketplace] = useState({})
+
+  
   // MetaMask Login/Connect
   const web3Handler = async () => {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    setAccount(accounts[0])
+    if(window !== undefined && window.ethereum !== undefined){
+
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      setAccount(accounts[0]);
+    }
     // Get provider from Metamask
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     // Set signer
